@@ -1,0 +1,10 @@
+/src/static/uploads
+/src/static/avatars
+/src/database.db
+/src/__pycache__
+*.pyc
+__pycache__/
+env/
+venv/
+src/__pycache__/Helpers.cpython-312.pyc
+src/__pycache__/Routing.cpython-313.pyc

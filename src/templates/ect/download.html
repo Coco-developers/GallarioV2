@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gallario — Download Android App</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif; }
+    
+    .gradient-bg {
+      background: radial-gradient(ellipse at top, #1a1a2e 0%, #0a0a0f 50%, #000000 100%);
+    }
+    
+    .glow-blue {
+      box-shadow: 0 0 60px rgba(59, 130, 246, 0.3), 0 0 100px rgba(99, 102, 241, 0.2);
+    }
+    
+    .glow-cyan {
+      box-shadow: 0 0 40px rgba(34, 211, 238, 0.4), 0 0 80px rgba(34, 211, 238, 0.2);
+    }
+    
+    .glass-card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    
+    .shimmer {
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      background-size: 200% 100%;
+      animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .float-animation {
+      animation: float 4s ease-in-out infinite;
+    }
+    
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(34, 211, 238, 0.4); }
+      50% { box-shadow: 0 0 40px rgba(34, 211, 238, 0.6), 0 0 60px rgba(59, 130, 246, 0.3); }
+    }
+    
+    .pulse-glow {
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 50%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .download-btn {
+      background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 50%, #6366f1 100%);
+      transition: all 0.3s ease;
+    }
+    
+    .download-btn:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(34, 211, 238, 0.3), 0 10px 20px rgba(99, 102, 241, 0.2);
+    }
+    
+    .step-number {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    }
+    
+    .qr-container {
+      background: linear-gradient(180deg, rgba(34, 211, 238, 0.1) 0%, rgba(99, 102, 241, 0.05) 100%);
+    }
+    
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #22d3ee, #3b82f6);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="gradient-bg min-h-screen text-white overflow-x-hidden">
+  <!-- Animated background orbs -->
+  <div class="orb w-96 h-96 bg-blue-600/30 top-0 -left-48 fixed"></div>
+  <div class="orb w-80 h-80 bg-cyan-500/20 top-1/3 -right-40 fixed"></div>
+  <div class="orb w-64 h-64 bg-purple-600/20 bottom-0 left-1/4 fixed"></div>
+
+  <div class="relative z-10 max-w-5xl mx-auto px-6 py-10">
+    <!-- Header -->
+    <header class="flex items-center justify-between mb-12">
+      <div class="flex items-center gap-4">
+        <!-- Logo -->
+        <div class="w-14 h-14 rounded-2xl glass-card flex items-center justify-center glow-blue">
+          <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="5" width="20" height="14" rx="3" stroke="url(#logo-gradient)" stroke-width="1.5" fill="none"/>
+            <circle cx="12" cy="12" r="3.6" stroke="url(#logo-gradient)" stroke-width="1.5" fill="none"/>
+            <path d="M7 6.5L8 4.5H16L17 6.5" stroke="url(#logo-gradient)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#22d3ee"/>
+                <stop offset="100%" stop-color="#3b82f6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-3xl font-extrabold gradient-text tracking-tight">Gallario</h1>
+          <p class="text-xs text-gray-400 mt-0.5 tracking-wide">Share moments • Be creative</p>
+        </div>
+      </div>
+      
+      <nav class="flex items-center gap-8">
+        <a href="{{ url_for('main.index') }}" class="nav-link text-gray-400 hover:text-white text-sm font-medium">Main Feed</a>
+        <a href="{{ url_for('main.login') }}" class="px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-500/30 transition-all text-sm font-semibold text-cyan-400">Login</a>
+      </nav>
+    </header>
+
+    <!-- Main Card -->
+    <section class="glass-card rounded-3xl p-8 md:p-12 glow-blue">
+      <div class="flex flex-col lg:flex-row gap-12 items-start">
+        <!-- Left Content -->
+        <div class="flex-1">
+          <!-- Badge -->
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-6">
+            <div class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
+            <span class="text-xs font-medium text-cyan-300 uppercase tracking-wider">Android App</span>
+          </div>
+          
+          <h2 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+            Get <span class="gradient-text">Gallario</span><br/>on Android
+          </h2>
+          
+          <p class="text-gray-400 text-lg leading-relaxed mb-8 max-w-lg">
+            Download the Gallario Android app and enjoy a mobile-first experience — seamless photo uploads, native camera access, and a push-ready UX.
+          </p>
+
+          <!-- Download Button -->
+          <a href="{{ url_for('static', filename='apk/Gallario.apk') }}" download class="download-btn inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-white font-bold text-lg shadow-2xl">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3v12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M7 11l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="4" y="18" width="16" height="2" rx="1" fill="currentColor"/>
+            </svg>
+            Download APK
+          </a>
+          
+          <!-- Meta Info -->
+          <div class="flex flex-wrap items-center gap-4 mt-6">
+            <div class="flex items-center gap-2 text-sm text-gray-500">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              <span>~27.32 MB</span>
+            </div>
+            <div class="w-1 h-1 rounded-full bg-gray-600"></div>
+            <div class="flex items-center gap-2 text-sm text-gray-500">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+              </svg>
+              <span>v0.0.1</span>
+            </div>
+            <div class="w-1 h-1 rounded-full bg-gray-600"></div>
+            <span class="text-sm text-amber-400/80">Debug build</span>
+          </div>
+
+          <!-- Installation Steps -->
+          <div class="mt-10 p-6 rounded-2xl bg-white/[0.02] border border-white/5">
+            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+              </svg>
+              How to install
+            </h3>
+            
+            <ol class="space-y-3">
+              <li class="flex gap-4 items-start">
+                <span class="step-number flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white">1</span>
+                <span class="text-gray-400 text-sm leading-relaxed pt-0.5">Tap the button above or scan the QR code to download the APK to your Android device.</span>
+              </li>
+              <li class="flex gap-4 items-start">
+                <span class="step-number flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white">2</span>
+                <span class="text-gray-400 text-sm leading-relaxed pt-0.5">Open the downloaded APK from your notification or file manager.</span>
+              </li>
+              <li class="flex gap-4 items-start">
+                <span class="step-number flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white">3</span>
+                <span class="text-gray-400 text-sm leading-relaxed pt-0.5">If prompted, allow installation from unknown sources for the browser or file manager you used.</span>
+              </li>
+              <li class="flex gap-4 items-start">
+                <span class="step-number flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white">4</span>
+                <span class="text-gray-400 text-sm leading-relaxed pt-0.5">Follow the on-screen installer to complete installation.</span>
+              </li>
+            </ol>
+            
+            <!-- Security Note -->
+            <div class="mt-5 p-4 rounded-xl bg-amber-500/5 border border-amber-500/20 flex gap-3">
+              <svg class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+              </svg>
+              <p class="text-sm text-amber-200/80 leading-relaxed">
+                <strong class="text-amber-300">Security note:</strong> Only install this APK if you trust the source. For production releases, we recommend publishing on Google Play Store.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right QR Section -->
+        <div class="w-full lg:w-72 float-animation">
+          <div class="qr-container rounded-3xl p-6 border border-cyan-500/10 pulse-glow">
+            <div class="text-center">
+              <p class="font-bold text-white mb-1">Scan to download</p>
+              <p class="text-xs text-gray-500 mb-4">Quick access from your phone</p>
+              
+              <div class="bg-white p-3 rounded-2xl inline-block shadow-2xl">
+                <img 
+                  alt="QR code" 
+                  class="w-40 h-40 rounded-lg"
+                  src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ request.url_root }}static/downloads/gallario.apk" 
+                />
+              </div>
+              
+              <p class="text-xs text-gray-500 mt-4">Or tap the button on your Android phone</p>
+            </div>
+          </div>
+          
+          <!-- Support Link -->
+          <div class="mt-6 text-center">
+            <p class="text-gray-500 text-sm">
+              Having troubles? 
+              <a href="mailto:CoCo-Devs@Proton.me" class="text-cyan-400 hover:text-cyan-300 transition-colors font-medium">Contact support</a>
+            </p>
+          </div>
+          
+          <!-- Android Badge -->
+          <div class="mt-6 flex justify-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-green-500/10 border border-green-500/20">
+              <svg class="w-5 h-5 text-green-400" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.523 2.089l1.427 2.473a.5.5 0 01-.183.683l-.183.106-1.427-2.472a.5.5 0 01.366-.79zM6.477 2.089a.5.5 0 01.366.79L5.416 5.35l-.183-.106a.5.5 0 01-.183-.683l1.427-2.473zM12 4C7.582 4 4 7.582 4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8c0-4.418-3.582-8-8-8zm-3 10a1 1 0 110-2 1 1 0 010 2zm6 0a1 1 0 110-2 1 1 0 010 2z"/>
+              </svg>
+              <span class="text-sm font-medium text-green-300">Android Ready</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-12 text-center">
+      <div class="flex items-center justify-center gap-3 mb-3">
+        <div class="h-px w-16 bg-gradient-to-r from-transparent to-gray-700"></div>
+        <span class="text-gray-500 text-sm">Made with ❤️ by</span>
+        <div class="h-px w-16 bg-gradient-to-l from-transparent to-gray-700"></div>
+      </div>
+      <p class="text-lg font-bold gradient-text mb-2">The CoCo-Devs</p>
+      <a href="mailto:coco-devs@proton.me" class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-cyan-400 transition-colors group">
+        <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+        CoCo-Devs@Proton.me
+      </a>
+    </footer>
+  </div>
+</body>
+</html>
