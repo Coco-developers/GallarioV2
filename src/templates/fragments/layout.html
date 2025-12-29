@@ -50,7 +50,7 @@
             <a href="{{url_for('main.logout')}}" style="color:blue;font-family: italic;">Logout</a>
             {% else %}
             <a id="UserNames" href="{{ url_for('main.login')}}">
-                <img src="static/avatars/unknown.png" alt="Avatar" class="avatar-lg" style="height:50px;width:auto">
+                <img src="static/images/default_pfp.png" alt="Avatar" class="avatar-lg" style="height:50px;width:auto">
             </a>
             <a href="{{url_for('main.logout')}}" class="btn btn-primary fancy-link neon">Login</a>
             {% endif %}
