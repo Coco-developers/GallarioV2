@@ -741,14 +741,14 @@ font-weight: 700;
     </footer>
 
     <script type="module">
-        import { display } from "{{ url_for('static', filename='markdown.js') }}";
+        import { display } from "{{ url_for('static', filename='javascript/markdown.js') }}";
 
         // Show loading, hide container initially
         const loading = document.getElementById('loading');
         const container = document.getElementById('container');
         
         // Load the markdown
-        display("/static/legal_agreement.md", container).then(() => {
+        display("/static/legal/legal.md", container).then(() => {
             // Hide loading, show content with animation
             loading.style.display = 'none';
             container.classList.remove('hidden');
