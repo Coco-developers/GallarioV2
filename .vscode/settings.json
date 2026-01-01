@@ -6,7 +6,7 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
         "requirements.txt": true,
-        "README.md": true,
+        "README.md": false,
         ".vscode": true
     },
     "search.exclude": {
