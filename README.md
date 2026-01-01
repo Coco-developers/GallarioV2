@@ -70,7 +70,7 @@ A modern, feature-rich social media platform built with Flask that allows users 
 
 ## Or if you have Linux(very cool)
 just run this in whatever folder you want :
-```
+```bash
 sudo apt update
 sudo apt install python3
 sudo apt install python3-flask
@@ -189,11 +189,16 @@ Don't.
 Kill the Python... I mean the python process.
 
 **Database errors**
+DELETE THE WHOLE SQLite DATABASE, run this in the main folder:
 ```bash
 # Delete database.db to reset
-run this
-rm database.db
+rm ./src/database.db
 ```
+and if that didn't delete it use `-rf`
+```bash
+rm -rf ./src/database.db
+```
+
 
 **File upload issues**
 - Check file permissions on the folder that the project in on
