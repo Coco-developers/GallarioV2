@@ -88,24 +88,50 @@ Have Python and download all the libraries from `requirements.txt` file.
 
 ```
 Gallario/
-├── app.py               # Main Flask application
-├── database.db          # SQLite database (auto-created)
-├── requirements.txt     # Python dependencies
-├── README.md            # This file
-├── static/              # Static assets
-│   ├── styles.css       # Main stylesheet
-│   ├── code.js          # JavaScript functionality
-│   ├── logo.png         # Application logo
-│   ├── Biome.ttf        # Custom font
-│   ├── avatars/         # User profile pictures
-│   └── uploads/         # User uploaded images
-└── templates/           # HTML templates
-    ├── index.html       # Main feed page
-    ├── login.html       # Login/register page
-    ├── post.html        # Individual post view
-    ├── profile.html     # User profile page
-    ├── layout.html      # Base template (Bootstrap)
-    └── side.html        # Notification sidebar
+.
+├── app.py                       # What to run
+├── LICENSE                      # Code license
+├── README.md                    # This file, info about the repo
+├── requirements.txt             # What Libraries that need to be installed to run the project
+└── src                          # src -> short for source -> short for source code
+    ├── backend                  # Backend where it is in python, Server logic
+    │   ├── Config.py            # Web app configiruation file
+    │   ├── Helpers.py           # Function that make code smaller
+    │   └── Routing.py           # Main logic file, here the serveing happens
+    ├── database.db              # This is auto-created it does not exist now. The SQLite Database
+    ├── static                   # Anything put in here is accesible by the anyone in the website.
+    │   ├── avatars/             # Auto-created folder where user avatars are stored
+    │   ├── favico.ico           # Website icon
+    │   ├── fonts/               # Folder for fonts
+    │   │   ├── Biome.ttf        # My favorite font
+    │   │   └── google_font.ttf  # Font made by google
+    │   ├── images/              # Website images
+    │   │   ├── background.jpg   # The website background
+    │   │   ├── default_pfp.png  # The user's default profile picture
+    │   │   ├── icondevs.jpg     # The company's logo
+    │   │   └── logo.png         # The old website logo
+    │   ├── javascript/          # Javascript folder, used in HTML
+    │   │   ├── change_desc.js   # To be used on `profile.html` where it allows profile description change
+    │   │   ├── code.js          # Generic script file, houses various functions
+    │   │   ├── markdown.js      # An AI written script, used to turn `.md` file into `html` on the client's side
+    │   │   ├── post_index.js    # Another generic script, to be used on `index.html`
+    │   │   └── tailwindcss.js   # A library used for styling, not written for readability
+    │   ├── legal/               # Folder to house legal files
+    │   │   └── legal.md         # Main agreement, used on `/register`
+    │   ├── styling/             # Styling folder, houses CSS files
+    │   │   ├── google.css       # Google css file
+    │   │   ├── index.css        # Old-school css
+    │   │   └── new.css          # Newer css
+    │   └── uploads/             # Auto-created folder, houses uploades and their thumbnails
+    └── templates                # Folder for HTML
+        ├── actions/login.html       # Used for either loggin in, and registering
+        ├── ect/download.html        # Used for the android app download
+        ├── ect/legal_agreement.html # User to show the legal aggrement
+        ├── fragments/layout.html    # This template was made to be the navigation bar, but just one file uses it
+        ├── fragments/side.html      # Another Template, used for notifications
+        ├── independent/post.html    # Used to look at a post
+        ├── independent/profile.html # Used to look at users's profile
+        └── index.html               # Used for showing off the Main Feed
 ```
 
 ## Database Schema
