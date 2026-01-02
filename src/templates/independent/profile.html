@@ -38,13 +38,13 @@
             <h2>{{ profile['username'] }}</h2>
             <h4 class="post-text">{{profile['description']}}</h4>
             {% if user and user['username'] == profile['username'] %}
+            <a href="/delete_account" style="color:red; font-weight: bolder; float: right;">Delete account</a>
             
             <div class="description-button-container">
             <button id="description_button" class="description-div" onclick="ChangeDescription();">Change Description</button>
             </div>
             <button id="description_cancel" class="description-div" onclick="CancelDescription();">Cancel Change</button>
             </div>
-
             <div class="avatar-form-div">
             <form action="{{ url_for('api.change_avatar') }}" method="POST" enctype="multipart/form-data" class="avatar-form">
                 <input type="file" name="avatar" accept="image/*" required>
