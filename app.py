@@ -7,13 +7,16 @@
 
 # Made by Nezar Bahid -- CEO of Coco-devs @ AUI 
 # =============================================================================
-from src.backend.Routing import *
+from src.backend.routing.webpages import web
+from src.backend.routing.api import api
+from src.backend.Config import app, arg
 import os
 # =============================================================================
 # APPLICATION STARTUP                                                         =
 # =============================================================================
 
-app.register_blueprint(main_bp)
+app.register_blueprint(web)
+app.register_blueprint(api)
 if __name__ == "__main__":
     """
     Start the Flask development server.
