@@ -7,7 +7,9 @@
         "**/Thumbs.db": true,
         "requirements.txt": true,
         "README.md": false,
-        ".vscode": true
+        ".vscode": true,
+        "**/__init__.py": true,
+        "**/__pycache__": true
     },
     "search.exclude": {
         "**/node_modules": true,
