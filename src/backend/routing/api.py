@@ -262,49 +262,6 @@ def dislike(post_id):
 
     return jsonify(success=True, like_count=like_count, dislike_count=dislike_count)
 
-@api.route("/post/<int:post_id>")
-def view_post(post_id):
-    """
-    Display a single post with its comments and reaction counts.
-    Shows the full post details, all comments, and user's current reaction.
-    """
-    db = get_db()
-    
-    # Get the post with author information
-    post = db.execute("""
-        SELECT posts.*, users.username, users.avatar
-        FROM posts JOIN users ON posts.user_id = users.id
-        WHERE posts.id = ?
-    """, (post_id,)).fetchone()
-    
-    if not post:
-        db.close()
-        return "Post not found", 404
-
-    # Get all comments for this post with author info
-    comments = db.execute("""
-        SELECT comments.*, users.username, users.avatar
-        FROM comments JOIN users ON comments.user_id = users.id
-        WHERE comments.post_id = ?
-        ORDER BY comments.timestamp ASC
-    """, (post_id,)).fetchall()
-
-    # Get reaction counts
-    like_count = db.execute("SELECT COUNT(*) AS c FROM likes WHERE post_id = ? AND value = 1", (post_id,)).fetchone()["c"]
-    dislike_count = db.execute("SELECT COUNT(*) AS c FROM likes WHERE post_id = ? AND value = -1", (post_id,)).fetchone()["c"]
-
-    # Get current user's reaction to this post
-    user_vote_row = None
-    user_vote = 0
-    uid = session.get("user_id")
-    if uid:
-        user_vote_row = db.execute("SELECT value FROM likes WHERE post_id = ? AND user_id = ?", (post_id, uid)).fetchone()
-        if user_vote_row:
-            user_vote = user_vote_row["value"] or 0
-
-    db.close()
-    return render_template("independent/post.html", post=post, comments=comments, like_count=like_count, dislike_count=dislike_count, user_vote=user_vote, user=current_user())
-
 @api.route("/delete/<int:post_id>", methods=["POST"])
 def delete_post(post_id):
     """

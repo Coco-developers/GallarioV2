@@ -85,7 +85,7 @@
             <p class="no-comments">No comments yet. Be the first to comment!</p>
             {% endfor %}
             {% if user %}
-            <form action="{{ url_for('main.add_comment', post_id=post.id) }}" method="POST" class="comment-form">
+            <form action="{{ url_for('api.add_comment', post_id=post.id) }}" method="POST" class="comment-form">
                 <textarea name="comment" placeholder="Write a comment..." required></textarea>
                 <button type="submit" class="btn-primary">Post Comment</button>
             </form>

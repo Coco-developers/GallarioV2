@@ -50,6 +50,49 @@ def index():
     db.close()
     return render_template("index.html", posts=posts, user=current_user(), page=page, total_posts=total_posts, total_pages=math.ceil(total_posts / per_page))
 
+@web.route("/post/<int:post_id>")
+def view_post(post_id):
+    """
+    Display a single post with its comments and reaction counts.
+    Shows the full post details, all comments, and user's current reaction.
+    """
+    db = get_db()
+    
+    # Get the post with author information
+    post = db.execute("""
+        SELECT posts.*, users.username, users.avatar
+        FROM posts JOIN users ON posts.user_id = users.id
+        WHERE posts.id = ?
+    """, (post_id,)).fetchone()
+    
+    if not post:
+        db.close()
+        return "Post not found", 404
+
+    # Get all comments for this post with author info
+    comments = db.execute("""
+        SELECT comments.*, users.username, users.avatar
+        FROM comments JOIN users ON comments.user_id = users.id
+        WHERE comments.post_id = ?
+        ORDER BY comments.timestamp ASC
+    """, (post_id,)).fetchall()
+
+    # Get reaction counts
+    like_count = db.execute("SELECT COUNT(*) AS c FROM likes WHERE post_id = ? AND value = 1", (post_id,)).fetchone()["c"]
+    dislike_count = db.execute("SELECT COUNT(*) AS c FROM likes WHERE post_id = ? AND value = -1", (post_id,)).fetchone()["c"]
+
+    # Get current user's reaction to this post
+    user_vote_row = None
+    user_vote = 0
+    uid = session.get("user_id")
+    if uid:
+        user_vote_row = db.execute("SELECT value FROM likes WHERE post_id = ? AND user_id = ?", (post_id, uid)).fetchone()
+        if user_vote_row:
+            user_vote = user_vote_row["value"] or 0
+
+    db.close()
+    return render_template("independent/post.html", post=post, comments=comments, like_count=like_count, dislike_count=dislike_count, user_vote=user_vote, user=current_user())
+
 @web.route("/logout")
 def logout():
     """
@@ -256,7 +299,7 @@ def register():
             return redirect(url_for("main.register")) 
         
         # Process avatar if provided
-        avatar_path = save_avatar_file(avatar_file) if avatar_file else "/static/images/default_pfp.png"
+        avatar_path = save_avatar_file(avatar_file) if avatar_file else "images/default_pfp.png"
         
         # Create user account
         db = get_db()

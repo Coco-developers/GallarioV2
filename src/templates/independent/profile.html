@@ -46,7 +46,7 @@
             </div>
 
             <div class="avatar-form-div">
-            <form action="{{ url_for('main.change_avatar') }}" method="POST" enctype="multipart/form-data" class="avatar-form">
+            <form action="{{ url_for('api.change_avatar') }}" method="POST" enctype="multipart/form-data" class="avatar-form">
                 <input type="file" name="avatar" accept="image/*" required>
                 <button type="submit" class="btn-primary">Change Avatar</button>
             </form>
