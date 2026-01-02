@@ -80,9 +80,9 @@ def init_db():
         comment_id INTEGER,                -- Specific comment ID for comment notifications
         seen BOOLEAN DEFAULT 0,            -- 0=unread, 1=read
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY(maker_id) REFERENCES users(id),
-        FOREIGN KEY(receiver_id) REFERENCES users(id),
-        FOREIGN KEY(comment_id) REFERENCES comments(id)
+        FOREIGN KEY(maker_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY(receiver_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY(comment_id) REFERENCES comments(id) ON DELETE CASCADE
     );
 
     -- Posts table: stores user-uploaded images and captions
@@ -92,7 +92,7 @@ def init_db():
         image TEXT,                        -- Filename of uploaded image
         caption TEXT,                      -- Post caption/description
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY(user_id) REFERENCES users(id)
+        FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
     );
 
     -- Likes table: stores user reactions to posts (like/dislike system)
@@ -102,20 +102,24 @@ def init_db():
         post_id INTEGER,                   -- Post being reacted to
         value INTEGER DEFAULT 1,           -- 1=like, -1=dislike, 0=no reaction
         UNIQUE(user_id, post_id),         -- One reaction per user per post
-        FOREIGN KEY(user_id) REFERENCES users(id),
-        FOREIGN KEY(post_id) REFERENCES posts(id)
+        FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE
     );
 
     -- DMs table: stores direct messages (currently unused but ready for future)
     CREATE TABLE IF NOT EXISTS dms (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,                   -- Sender
-        receiever_id INTEGER,              -- Receiver (note: typo in original)
-        message_id INTEGER,                -- Message identifier
-        value TEXT,                        -- Message content
-        UNIQUE(user_id, message_id),
-        FOREIGN KEY(user_id) REFERENCES users(id)
+        sender_id INTEGER NOT NULL,
+        receiver_id INTEGER NOT NULL,
+        content TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        seen BOOLEAN DEFAULT 0,
+        FOREIGN KEY(sender_id)  REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY(receiver_id) REFERENCES users(id) ON DELETE CASCADE,
+        CHECK (sender_id != receiver_id)
     );
+
+
 
     -- Comments table: stores user comments on posts
     CREATE TABLE IF NOT EXISTS comments (
@@ -124,8 +128,8 @@ def init_db():
         user_id INTEGER NOT NULL,         -- User who commented
         text TEXT NOT NULL,               -- Comment content
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY(post_id) REFERENCES posts(id),
-        FOREIGN KEY(user_id) REFERENCES users(id)
+        FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE,
+        FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
     );
     """)
     conn.commit()

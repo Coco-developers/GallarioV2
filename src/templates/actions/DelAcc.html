@@ -1,0 +1,28 @@
+{% extends "fragments/layout.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="mb-4 text-center">Delet your account</h3>
+                <form method="POST" action="{{ url_for('api.delete_account') }}" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label" style="font-family: 'Helvetica', serif;">Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <input type="checkbox" required>
+                    I know that all the posts, comments would be deleted. and that this action cannot be undone.
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        Delete my account
+                    </button>
+                </form>
+
+                <div class="mt-3 text-center">
+                    <p style="font-family: 'Helvetica', serif;"><a href="{{ url_for('main.index') }}" style="font-family: 'Helvetica', serif;">Go to Home</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

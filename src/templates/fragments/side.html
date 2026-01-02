@@ -166,7 +166,7 @@ async function getNotifications(){
       // Attach click handler to the post link so clicking marks the notification seen then navigates
       // Use event listener after element is created and appended (or before append is fine too)
       // but we need to query inside the li
-      const postLink = li.querySelector('blue-notif-text');
+      const postLink = li.querySelectorAll("a")[1];
 
       if (postLink) {
         postLink.addEventListener('click', async function (e) {
@@ -174,7 +174,7 @@ async function getNotifications(){
 
           // optimistic UI update: remove styling immediately
           if (!n.seen) {
-            postLink.classList.remove('fancy-link', 'neon');
+            postLink.classList.remove("blue-notif-text");
           }
 
           // send request to mark as seen; ignore failures but log them
@@ -214,11 +214,12 @@ async function getNotifications(){
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => { // After a second after loading
-    if (getNotifications()){
-      openBtn.classList.add("new-notif");
-    }
-  }, 1000);
+  setTimeout(async () => { // After 1 second
+      const hasNew = await getNotifications(); // wait for the actual value
+      if (hasNew) {
+          openBtn.classList.add("new-notif");
+      }
+  }, 500);
   // Open panel
   openBtn.addEventListener("click", () => {
     if (!overlay.classList.contains("hidden")){

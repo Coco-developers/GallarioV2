@@ -130,37 +130,6 @@ def profile(username=None):
     
     return render_template("independent/profile.html", profile=profile_user, posts=posts, user=current_user())
 
-@web.route("/profile/avatar", methods=["POST"])
-def change_avatar():
-    """
-    Handle avatar upload/change for the current user.
-    Processes the image, resizes it, and updates the user's avatar in the database.
-    """
-    # Check authentication
-    user = current_user()
-    if not user:
-        return redirect(url_for("main.login"))
-    
-    # Get uploaded avatar file
-    avatar_file = request.files.get("avatar")
-    if not avatar_file or avatar_file.filename == "":
-        flash("No file selected.", "error")
-        return redirect(url_for("main.profile", username=user["username"]))
-    
-    # Process and save the avatar
-    avatar_path = save_avatar_file(avatar_file)
-    if not avatar_path:
-        flash("Invalid avatar file.", "error")
-        return redirect(url_for("main.profile", username=user["username"]))
-    
-    # Update user's avatar in database
-    db = get_db()
-    db.execute("UPDATE users SET avatar = ? WHERE id = ?", (avatar_path, user["id"]))
-    db.commit()
-    db.close()
-    
-    flash("Avatar updated!", "success")
-    return redirect(url_for("main.profile", username=user["username"]))
 
 @web.route("/uploads/<filename>")
 def uploaded_file(filename):
@@ -320,3 +289,7 @@ def register():
 
     # Show registration form (GET request or failed POST)
     return render_template("actions/login.html", register=True, user=current_user())
+
+@web.route("/delete_account")
+def delete_account():
+    return render_template("actions/DelAcc.html")

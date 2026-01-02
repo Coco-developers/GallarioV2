@@ -3,11 +3,11 @@ from ..Helpers import (
     get_db, current_user, allowed_file, save_upload_file,
     remove_upload_file
 )
-from ..Config import (UPLOAD_FOLDER)
 from flask import (
-    session, Blueprint, request, render_template, url_for, redirect,
+    session, Blueprint, request, url_for, redirect,
     flash, jsonify, current_app
 )
+from werkzeug.security import check_password_hash
 
 
 api = Blueprint("api", __name__, url_prefix="/")
@@ -51,6 +51,38 @@ def upload():
     db.close()
     flash("Uploaded!", "success")
     return redirect(url_for("main.index"))
+
+@api.route("/profile/avatar", methods=["POST"])
+def change_avatar():
+    """
+    Handle avatar upload/change for the current user.
+    Processes the image, resizes it, and updates the user's avatar in the database.
+    """
+    # Check authentication
+    user = current_user()
+    if not user:
+        return redirect(url_for("main.login"))
+    
+    # Get uploaded avatar file
+    avatar_file = request.files.get("avatar")
+    if not avatar_file or avatar_file.filename == "":
+        flash("No file selected.", "error")
+        return redirect(url_for("main.profile", username=user["username"]))
+    
+    # Process and save the avatar
+    avatar_path = save_avatar_file(avatar_file)
+    if not avatar_path:
+        flash("Invalid avatar file.", "error")
+        return redirect(url_for("main.profile", username=user["username"]))
+    
+    # Update user's avatar in database
+    db = get_db()
+    db.execute("UPDATE users SET avatar = ? WHERE id = ?", (avatar_path, user["id"]))
+    db.commit()
+    db.close()
+    
+    flash("Avatar updated!", "success")
+    return redirect(url_for("main.profile", username=user["username"]))
 
 @api.route("/like/<int:post_id>", methods=["POST"])
 def like(post_id):
@@ -342,7 +374,7 @@ def mark_notification_seen(notif_id):
     Used when user clicks on a notification to mark it as read.
     Returns JSON response for frontend updates.
     """
-    # Check authentication
+    # Check authentication")
     user = current_user()
     if not user:
         return jsonify(success=False, error="Unauthorized"), 401
@@ -364,3 +396,55 @@ def mark_notification_seen(notif_id):
     if not changed:
         return jsonify(success=False, error="Not found or not allowed"), 404
     return jsonify(success=True)
+
+@api.route("/delete_account_api", methods=["POST"])
+def delete_account():
+    current = current_user()
+    if not current:
+        # Not authenticated
+        return jsonify({"error": "Not even authenticated"}), 401
+
+    password = request.form.get("password", "")
+    if not password:
+        return jsonify({"error": "Password required"}), 400
+    db = get_db()
+
+    try:
+        # Fetch the user row from DB (do not overwrite `current`)
+        user_row = db.execute(
+            "SELECT id, username, password FROM users WHERE username = ?",
+            (current["username"],)
+        ).fetchone()
+
+        if not user_row:
+            return jsonify({"error": "User not found"}), 404
+
+        # Verify password hash
+        if not check_password_hash(user_row["password"], password):
+            # Don't reveal too much; flash if you want for UI
+            flash("Incorrect password")
+            return jsonify({"error": "Incorrect password"}), 403
+
+        user_id = user_row["id"]
+        db.execute("DELETE FROM comments WHERE user_id = ?;", (user_id,))
+        db.execute("DELETE FROM dms WHERE sender_id = ?;", (user_id,))
+        db.execute("DELETE FROM dms WHERE receiver_id = ?;", (user_id,))
+        db.execute("DELETE FROM posts WHERE user_id = ?;", (user_id,))
+        db.execute("DELETE FROM notifications WHERE receiver_id = ?;", (user_id,))
+
+        db.execute("DELETE FROM users WHERE id = ?;", (user_id,))
+        db.commit()
+        redirect(url_for("main.login"))
+        return redirect(url_for("main.index")), 200
+
+    except sqlite3.IntegrityError as e:
+        db.rollback() # FK constraint failed or other integrity issue
+        return jsonify({"error": "Database constraint error", "detail": str(e)}), 500
+
+    except Exception as e:
+        db.rollback() # Generic server error — log server-side
+        current_app.logger.exception("Error deleting account")
+        return jsonify({"error": "Internal server error"}), 500
+
+    finally:
+        db.close()
