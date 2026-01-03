@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallario - Main Feed</title>
-    <script src="/static/javascript/tailwindcss.js"></script>
+    <script src="/static/javascript/lib/tailwindcss.js"></script>
     <link href="/static/styling/google.css" rel="stylesheet">
     <link href="/static/styling/new.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favico.ico') }}">
@@ -276,10 +276,10 @@
 <script>
     Post = false;
 </script>
-<script src="{{ url_for('static',filename='javascript/index.js') }}"></script>
-<script src="{{ url_for('static',filename='javascript/interactions.js') }}"></script>
-<script src="{{ url_for('static',filename='javascript/elapsed_time.js') }}"></script>
-<script src="{{ url_for('static',filename='javascript/shorten_text.js') }}"></script>
+<script src="{{ url_for('static',filename='javascript/individual/index.js') }}"></script>
+<script src="{{ url_for('static',filename='javascript/common/interactions.js') }}"></script>
+<script src="{{ url_for('static',filename='javascript/common/elapsed_time.js') }}"></script>
+<script src="{{ url_for('static',filename='javascript/common/shorten_text.js') }}"></script>
 
 </body>
 <!-- Footer -->

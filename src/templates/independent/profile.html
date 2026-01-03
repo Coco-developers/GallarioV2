@@ -70,11 +70,8 @@
             {% endfor %}
         </div>
     </main>
-<script>
-    Post = false;
-</script>
 {% if user and user['username'] == profile['username'] %}
-<script src="/static/javascript/change_desc.js"></script>
+<script src="{{url_for('static',filename='javascript/individual/profile.js')}}"></script>
 {% endif %} 
 
 
