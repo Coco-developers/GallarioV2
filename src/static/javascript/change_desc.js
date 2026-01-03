@@ -1,4 +1,3 @@
-
 function ChangeDescription(){
   di = document.getElementById('description_input');
   dc = document.getElementById('description_cancel');

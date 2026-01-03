@@ -19,8 +19,7 @@
 
 
 .glass-card:hover {
-transform: translateY(-10px);
-box-shadow: 0 20px 40px rgba(34,211,238,0.2), 0 0 60px rgba(99,102,241,0.1);
+    box-shadow: 0 20px 40px rgba(34,211,238,0.2), 0 0 60px rgba(99,102,241,0.1);
 }
 
 
@@ -98,3 +97,6 @@ p, span { line-height: 1.6; }
 /* Avatar ring */
 .avatar-ring { padding: 2px; background: linear-gradient(135deg,#22d3ee,#3b82f6,#8b5cf6); border-radius: 50%; }
 
+.post-image{
+    border-radius: 5%;
+}

@@ -139,7 +139,7 @@
                         </div>
                         <span class="font-semibold text-white group-hover:text-cyan-400 transition-colors" style="font-family: 'Times New Roman ', serif;">{{ post['username'] }}</span>
                     </a>
-                    <span class="text-sm text-gray-500 flex items-center gap-2">
+                    <span class="text-sm text-gray-500 flex items-center gap-2 timestamp">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
@@ -148,7 +148,7 @@
                 </div>
                 
                 <!-- Post Image -->
-                <div class="relative overflow-hidden bg-black/20">
+                <div class="relative overflow-hidden bg-black/20 post-image">
                     <img src="{{ url_for('main.uploaded_file', filename=post['image']|replace('.', '_thumb.', 1)) }}" alt="Post image" class="w-full post-image">
                 </div>
                 
@@ -276,8 +276,10 @@
 <script>
     Post = false;
 </script>
-<script src="{{ url_for('static',filename='javascript/code.js') }}"></script>
-<script src="{{ url_for('static',filename='javascript/post_index.js') }}"></script>
+<script src="{{ url_for('static',filename='javascript/index.js') }}"></script>
+<script src="{{ url_for('static',filename='javascript/interactions.js') }}"></script>
+<script src="{{ url_for('static',filename='javascript/elapsed_time.js') }}"></script>
+<script src="{{ url_for('static',filename='javascript/shorten_text.js') }}"></script>
 
 </body>
 <!-- Footer -->
