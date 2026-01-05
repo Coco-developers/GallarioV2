@@ -9,7 +9,7 @@
     {% include "fragments/navbar.html" %}
     <div class="flex justify-center">
     <main class="flex-1 max-w-5xl mx-2 centered px-4 py-6 space-y-6">
-        <!-- Post -->
+    <!-- Post -->
         <article id="post-{{ post['id'] }}" class="mt-6 rounded-2xl bg-gray-900/90 border border-gray-800 shadow-md overflow-hidden">
         <!-- Header -->
         <header class="flex items-center gap-3 px-4 py-3">
@@ -25,7 +25,7 @@
             <a href="{{ url_for('main.profile', username=post['username']) }}" class="block text-sm font-medium text-white truncate hover:underline">
                 {{ post['username'] }}
             </a>
-            <time class="text-xs text-gray-400 block mt-0.5">{{ post['timestamp'] }}</time>
+            <time class="timestamp text-xs text-gray-400 block mt-0.5">{{ post['timestamp'] }}</time>
             </div>
 
             <!-- Owner actions -->
