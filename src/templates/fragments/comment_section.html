@@ -1,0 +1,76 @@
+<div class="mt-6 rounded-2xl bg-gray-900/90 border border-gray-800 p-4 shadow-md text-gray-100">
+  <h2 class="text-lg font-semibold mb-4">Comments</h2>
+
+  {% if comments|length > 0 %}
+  <ul class="space-y-2" role="list">
+    {% for comment in comments %}
+    <li class="flex items-center gap-3">
+      <!-- Avatar -->
+      <a href="{{ url_for('main.profile', username=comment['username']) }}" class="shrink-0">
+        <img
+          src="{{ url_for('static', filename=comment['avatar']) }}"
+          alt="{{ comment['username'] }} avatar"
+          class="w-8 h-8 rounded-full object-cover border border-gray-700"
+        />
+      </a>
+
+      <!-- Username + text + timestamp inline -->
+      <div class="flex-1 flex items-center gap-3">
+        <a href="{{ url_for('main.profile', username=comment['username']) }}" class="text-white font-medium hover:underline whitespace-nowrap">
+          {{ comment['username'] }}
+        </a>
+
+        <p class="text-gray-300 truncate flex-1">
+          {{ comment['text'] }}
+        </p>
+
+        <time class="text-xs text-gray-400 whitespace-nowrap">
+          {{ comment['timestamp'] }}
+        </time>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="py-4 text-center">
+    <p class="text-gray-400">No comments yet. Be the first to comment!</p>
+  </div>
+  {% endif %}
+
+  <!-- Comment form -->
+  {% if user %}
+  <form
+    action="{{ url_for('api.add_comment', post_id=post.id) }}"
+    method="POST"
+    class="mt-4 flex items-center gap-3"
+    aria-label="Add a comment"
+  >
+    <a href="{{ url_for('main.profile', username=user['username']) }}" class="shrink-0">
+      <img
+        src="{{ url_for('static', filename=user['avatar']) }}"
+        alt="{{ user['username'] }} avatar"
+        class="w-8 h-8 rounded-full object-cover border border-gray-700"
+      />
+    </a>
+
+    <input
+      type="text"
+      name="comment"
+      required
+      placeholder="Write a comment..."
+      class="flex-1 rounded-lg bg-gray-800 border border-gray-700 py-2 text-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+    />
+
+    <button
+      type="submit"
+      class="inline-flex items-center px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+    >
+      Post
+    </button>
+  </form>
+  {% else %}
+  <p class="mt-4 text-sm text-gray-400">
+    <a href="{{ url_for('main.login') }}" class="text-indigo-400 hover:underline">Login</a> to comment
+  </p>
+  {% endif %}
+</div>

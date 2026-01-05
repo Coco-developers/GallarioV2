@@ -1,99 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ post.caption }} - Gallario</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styling/index.css') }}">
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favico.ico') }}">
+    {% include "fragments/header.html" %}
 </head>
-<body>
+<body class="bg-gray-950 text-gray-100 font-sans min-h-screen flex flex-col">
     <!-- NAVBAR -->
-    <div class="navbar">
-        <div class="nav-left">
-            <a href="{{ url_for('main.index') }}">
-                <img src="/static/images/logo.png" class="Logo">
-            </a>
-        </div>
-        <div class="nav-right">
-            {% if user %}
-            <a id="UserNames" href="{{ url_for('main.profile', username=user.username) }}">
-                <img src="{{ url_for('static', filename=user.avatar) }}" alt="Avatar" class="avatar-lg" style="height:50px;width:auto">
-                {{ user.username }}
-            </a>
-            <a href="{{url_for('main.logout')}}" style="color:blue;font-family: italic;">Logout</a>
-            {% else %}
-            <a id="UserNames" href="{{ url_for('main.login')}}">
-                <img src="{{ url_for('static', filename='avatars/unknown.png') }}" alt="Avatar" class="avatar-lg" style="height:50px;width:auto">
-            </a>
-            <a href="{{url_for('main.logout')}}" class="btn btn-primary fancy-link neon">Login</a>
-            {% endif %}
-        </div>
-    </div>
-
-    <main class="container">
+    {% include "fragments/navbar.html" %}
+    <div class="flex justify-center">
+    <main class="flex-1 max-w-5xl mx-2 centered px-4 py-6 space-y-6">
         <!-- Post -->
-        <div class="card post-card">
-            
-            <div class="post-header">
-                <img src="{{ url_for('static', filename=post['avatar']) }}" class="avatar-sm" alt="Avatar">
-                <a href="{{ url_for('main.profile', username=post['username']) }}" class="username">{{ post['username'] }}</a>
-                <span class="timestamp">{{ post['timestamp'] }}</span>
+        <article id="post-{{ post['id'] }}" class="mt-6 rounded-2xl bg-gray-900/90 border border-gray-800 shadow-md overflow-hidden">
+        <!-- Header -->
+        <header class="flex items-center gap-3 px-4 py-3">
+            <a href="{{ url_for('main.profile', username=post['username']) }}" class="shrink-0">
+            <img
+                src="{{ url_for('static', filename=post['avatar']) }}"
+                alt="{{ post['username'] }} avatar"
+                class="w-10 h-10 rounded-full object-cover border border-gray-700"
+            />
+            </a>
+
+            <div class="flex-1 min-w-0">
+            <a href="{{ url_for('main.profile', username=post['username']) }}" class="block text-sm font-medium text-white truncate hover:underline">
+                {{ post['username'] }}
+            </a>
+            <time class="text-xs text-gray-400 block mt-0.5">{{ post['timestamp'] }}</time>
             </div>
 
-            <img src="{{ url_for('main.uploaded_file', filename=post['image']) }}" class="post-image">
+            <!-- Owner actions -->
+            <div class="flex items-center gap-2">
+            <a
+                href="{{ url_for('main.uploaded_file', filename=post['image']) }}"
+                target="_blank"
+                rel="noopener"
+                class="text-sm text-indigo-400 hover:underline px-2 py-1 rounded-md"
+                aria-label="Open image fullscreen"
+            >
+                Fullscreen
+            </a>
 
-            <div class="post-body">
-                <div style="display: flex; justify-content: flex-end; gap: 12px;">
-                    <a href="{{ url_for('main.uploaded_file', filename=post['image']) }}" class="fancy-link neon" style="float: right;">Fullscreen</a>
-                    <!-- <a href="{{ url_for('main.uploaded_file', filename=post['image']) }}" class="fancy-link neon"  download="Image.jpg">Download</a> -->
-                    {% if user and user['id'] == post['user_id'] %}
-                    <a href="#" onclick='deletePost("{{post.id}}"); return false' class="fancy-link neon" style="float: right; color: red;">Delete post</a>
-                    {% endif %}
+            {% if user and user['id'] == post['user_id'] %}
+            <button
+                onclick="deletePost({{ post['id'] }}); return false;"
+                class="text-sm text-red-400 hover:text-red-500 px-2 py-1 rounded-md"
+                aria-label="Delete post"
+                title="Delete post"
+            >
+                Delete
+            </button>
+            {% endif %}
+            </div>
+        </header>
+
+        <!-- Image -->
+        <div class="w-full bg-black/50">
+            <img
+            src="{{ url_for('main.uploaded_file', filename=post['image']) }}"
+            alt="Post image"
+            class="w-full object-cover block"
+            />
+        </div>
+
+        <!-- Body: caption + interactions -->
+        <div class="px-4 py-4">
+            <p class="text-gray-200 text-sm whitespace-pre-wrap mb-3">
+            {{ post['caption'] }}
+            </p>
+
+            <div class="flex items-center justify-between gap-3">
+            <!-- Like/Dislike -->
+            <div class="flex items-center gap-3">
+                {% if user %}
+                <button
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-800 border border-gray-700 text-sm text-gray-100 hover:bg-gray-700 focus:outline-none"
+                data-id="{{ post['id'] }}"
+                aria-pressed="false"
+                >
+                <span aria-hidden>❤️</span>
+                <span id="like-count-{{ post['id'] }}">{{ like_count }}</span>
+                </button>
+
+                <button
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-800 border border-gray-700 text-sm text-gray-100 hover:bg-gray-700 focus:outline-none"
+                data-id="{{ post['id'] }}"
+                aria-pressed="false"
+                >
+                <span aria-hidden>💔</span>
+                <span id="dislike-count-{{ post['id'] }}">{{ dislike_count }}</span>
+                </button>
+                {% else %}
+                <div class="text-sm text-gray-400">
+                <span id="like-count-{{ post['id'] }}">{{ like_count }} likes</span>
+                <span class="mx-2">·</span>
+                <span id="dislike-count-{{ post['id'] }}">{{ dislike_count }} dislikes</span>
                 </div>
-                <p class="caption">{{ post['caption'] }}</p>
-                <div class="like-section">
-                    {% if user %}
-                    <button class="like-btn" data-id="{{ post.id }}">❤️ 
-                        <span id="like-count-{{ post.id }}">{{ like_count }}</span>
-                    </button>
-                    <button class="dislike-btn" data-id="{{ post.id }}">💔 
-                        <span id="dislike-count-{{ post.id }}">{{ dislike_count }}</span>
-                    </button>
-                    {% else %}
-                    <span id="like-count-{{ post.id }}">{{ like_count }} likes</span>
-                    <span id="dislike-count-{{ post.id }}">{{ dislike_count }} disikes</span>
-                    <a href="/login" class="fancy-link neon">You should login to interact with posts.</a>
-                    {% endif %}
-                </div>
+                {% endif %}
+            </div>
+
+            <!-- Optional: share / more actions -->
+            <div class="text-sm text-gray-400">
+                <!-- placeholder for future actions -->
+            </div>
             </div>
         </div>
+        </article>
+
 
         <!-- Comments Section -->
-        <div class="card comments-card">
-            <h2>Comments</h2>
-            {% for comment in comments %}
-            <div class="comment">
-                    <a href="{{ url_for('main.profile', username=comment['username']) }}"><img src="{{ url_for('static', filename=comment['avatar']) }}" class="avatar-sm" alt="Avatar"></a>
-                <div class="comment-body" id="comment-{{ comment['id'] }}">
-                    <a href="{{ url_for('main.profile', username=comment['username']) }}"><strong class="username" style="font-size: 100%">{{ comment['username'] }}</strong></a>
-                    <p class="post-text">{{ comment['text'] }}</p>
-                    <span class="timestamp">{{ comment['timestamp'] }}</span>
-                </div>
-            </div>
-            {% else %}
-            <p class="no-comments">No comments yet. Be the first to comment!</p>
-            {% endfor %}
-            {% if user %}
-            <form action="{{ url_for('api.add_comment', post_id=post.id) }}" method="POST" class="comment-form">
-                <textarea name="comment" placeholder="Write a comment..." required></textarea>
-                <button type="submit" class="btn-primary">Post Comment</button>
-            </form>
-            {% else %}
-            <p><a href="{{ url_for('main.login') }}" class="fancy-link neon">Login</a> to comment</p>
-            {% endif %}
-        </div>
+        {% include "fragments/comment_section.html" %}
     </main>
+    </div>
 
 <script>
     Post = true;
