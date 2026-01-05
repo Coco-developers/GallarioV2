@@ -112,7 +112,7 @@
                         </div>
                         {% endif %}
                         
-                        <a href="{{ url_for('main.view_post', post_id=post.id) }}" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/20 text-cyan-400 font-medium transition-all ml-auto" onclick="event.stopPropagation();">
+                        <a href="{{ url_for('main.view_post', post_id=post.id) }}#comment-section" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/20 text-cyan-400 font-medium transition-all ml-auto" onclick="event.stopPropagation();">
                             <span>💬</span>
                             <span style="font-family: 'Times New Roman ', serif;">{{ post.comment_count }}</span>
                         </a>
