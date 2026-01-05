@@ -64,16 +64,15 @@
             <span id="avatarName" class="text-sm text-gray-400 truncate">No file chosen</span>
           </div>
         </div>
-
+        {% endif %}
         <!-- Legal checkbox -->
         <div class="flex items-start gap-3 mt-1">
             <input id="agree" name="agree" type="checkbox" required class="mt-0.5 h-4 w-4 rounded text-indigo-500 bg-gray-800 border-gray-700 focus:ring-indigo-400">
             <label for="agree" class="text-sm text-gray-300">
-            I agree to the
+            I agree to the {{ 'latest version of the' if not register }} 
             <a href="{{ url_for('main.legal') }}" class="text-indigo-400 hover:underline">Legal Agreement</a>
             </label>
         </div>
-        {% endif %}
 
         <!-- Submit -->
         <div>
