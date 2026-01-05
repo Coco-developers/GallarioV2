@@ -1,0 +1,52 @@
+<nav class="glass-nav sticky top-0 z-50">
+    <div class="max-full mx-auto px-4 py-3">
+        <div class="flex items-center justify-between">
+            
+            <!-- Logo & Brand -->
+            <a href="{{ url_for('main.index') }}" class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl 
+        bg-white/5 backdrop-blur
+        border border-blue-400/30
+        transition-transform duration-300
+        group-hover:ring-2 group-hover:ring-blue-400/40
+        flex items-center justify-center">
+                    <img src="/static/images/icondevs.jpg" alt="Gallario logo" class="w-30 h-30 object-contain"/>
+                </div>
+
+                <div>
+                    <h1 class="text-2xl font-extrabold gradient-text" style="font-family: 'Cooper Black', serif;">GALLARIO</h1>
+
+                    <p class="text-sm text-white/50" style="font-family: 'Helvetica', serif;">Share moments • Be Sigma</p>
+                </div>
+            </a>
+
+
+
+            <!-- User Section -->
+            <div class="flex items-center gap-4">
+                {% if user %}
+                <a href="{{ url_for('main.profile', username=user.username) }}" class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 transition-all group">
+                    <div class="avatar-ring">
+                        <img src="{{ url_for('static', filename=user.avatar) }}" alt="Avatar" class="w-10 h-10 rounded-full object-cover">
+                    </div>
+                    <span class="hidden sm:block font-semibold text-gray-300 group-hover:text-white transition-colors">{{ user.username }}</span>
+                </a>
+                <a href="{{ url_for('main.logout') }}" class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-red-500/10 hover:border-red-500/30 hover:text-red-400 transition-all text-sm font-medium text-gray-400">
+                    Logout
+                </a>
+                {% else %}
+                <a href="{{ url_for('main.login') }}" class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 transition-all">
+                    <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                    </div>
+                </a>
+                <a href="{{ url_for('main.login') }}" class="btn-primary-gradient px-5 py-2.5 rounded-xl font-semibold text-white text-sm">
+                    Login
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

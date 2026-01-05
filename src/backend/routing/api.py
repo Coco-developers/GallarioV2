@@ -1,7 +1,6 @@
 import sqlite3, time
 from ..Helpers import (
-    get_db, current_user, allowed_file, save_upload_file,
-    remove_upload_file
+    get_db, current_user, allowed_file, save_upload_file, save_avatar_file, remove_upload_file
 )
 from flask import (
     session, Blueprint, request, url_for, redirect,
@@ -337,7 +336,7 @@ def delete_post(post_id):
     db.close()
 
     flash("Post deleted.", "success")
-    return redirect(url_for("main.index"))
+    return jsonify({"success": True})
 
 @api.route("/description", methods=["POST"])
 def change_description():

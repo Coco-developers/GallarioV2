@@ -1,81 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ profile['username'] }} - Profile</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styling/index.css') }}">
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favico.ico') }}">
+    {% include "fragments/header.html" %}
 </head>
-<body>
-    <input class="input-group" type="text" id="description_input" placeholder="Enter your new description">
+<body class="gradient-bg min-h-screen text-white pattern-bg">
     <!-- Navbar -->
-    <div class="navbar">
-        <!-- Left: Logo -->
-        <div class="nav-left">
-            <a href="{{ url_for('main.index') }}">
-                <img src="/static/images/logo.png" class="Logo">
-                </img>
-            </a>
-        </div>
-    
-    
-        <!-- Right: Profile + Logout -->
-        <div class="nav-right">
-            <a href="{{ url_for('main.profile', username=user.username) }}">
-                <img src="{{ url_for('static', filename=user['avatar']) }}" class="avatar-lg" alt="Avatar" style="height:50px;width:auto">
-                {{ user.username }}
-            </a>
-            <a href="{{ url_for('main.logout') }}">Logout</a>
-        </div>
-    </div>
+    {% include "fragments/navbar.html" %}
 
+    <main class="mx-auto max-w-4xl px-4 py-6">
+    <!-- Profile Header -->
+    <div class="bg-gray-900 shadow-md rounded-2xl p-6 flex flex-col md:flex-row md:items-center md:gap-6 relative">
+        <div class="flex items-start md:items-center gap-4 w-full">
+        <img
+            src="{{ url_for('static', filename=profile['avatar']) }}"
+            alt="Avatar"
+            class="w-28 h-28 rounded-full object-cover flex-shrink-0"
+        >
 
-    <main class="container">
-        <!-- Profile Header -->
-        <div class="card profile-header">
-            <img src="{{ url_for('static', filename=profile['avatar']) }}" class="avatar-lg" alt="Avatar">
-            <h2>{{ profile['username'] }}</h2>
-            <h4 class="post-text">{{profile['description']}}</h4>
+        <div class="flex-1 min-w-0">
+            <div class="flex items-start justify-between gap-4">
+            <div class="truncate">
+                <h2 class="text-2xl font-semibold text-white-900 truncate">{{ profile['username'] }}</h2>
+                <h3>Description :</h3>
+                <p id="profileDescription" class="mt-1 text-gray-600 break-words">{{ profile['description'] }}</p>
+            </div>
+
             {% if user and user['username'] == profile['username'] %}
-            <a href="/delete_account" style="color:red; font-weight: bolder; float: right;">Delete account</a>
-            
-            <div class="description-button-container">
-            <button id="description_button" class="description-div" onclick="ChangeDescription();">Change Description</button>
+            <div class="flex flex-col items-end gap-2">
+                <a
+                href="/delete_account"
+                class="text-red-600 font-semibold hover:underline text-sm"
+                >Delete account</a>
             </div>
-            <button id="description_cancel" class="description-div" onclick="CancelDescription();">Cancel Change</button>
+            {% endif %}
             </div>
-            <div class="avatar-form-div">
-            <form action="{{ url_for('api.change_avatar') }}" method="POST" enctype="multipart/form-data" class="avatar-form">
-                <input type="file" name="avatar" accept="image/*" required>
-                <button type="submit" class="btn-primary">Change Avatar</button>
+
+            {% if user and user['username'] == profile['username'] %}
+            <!-- Description editor (hidden by default) -->
+            <div id="descriptionEditor" class="mt-4 hidden">
+            <textarea id="descriptionTextarea" rows="3"
+                class="w-full rounded-md border border-gray-200 p-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            >{{ profile['description'] }}</textarea>
+
+            <div class="mt-3 flex gap-2">
+                <button
+                id="descriptionSave"
+                class="inline-flex items-center px-3 py-1.5 rounded-md bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 focus:outline-none"
+                onclick="saveDescription();"
+                >Save</button>
+
+                <button
+                id="descriptionCancel"
+                class="inline-flex items-center px-3 py-1.5 rounded-md bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 focus:outline-none"
+                onclick="CancelDescription();"
+                >Cancel</button>
+            </div>
+            </div>
+
+            <!-- Change description button (visible by default) -->
+            <div id="descriptionControls" class="mt-4">
+            <button
+                id="descriptionButton"
+                class="inline-flex items-center px-3 py-1.5 rounded-md bg-gray-100 text-sm text-gray-800 hover:bg-gray-200 focus:outline-none"
+                onclick="ChangeDescription();"
+            >Change Description</button>
+            </div>
+
+            <!-- Avatar change form -->
+            <div class="mt-4">
+            <form
+                action="{{ url_for('api.change_avatar') }}"
+                method="POST"
+                enctype="multipart/form-data"
+                class="flex items-center gap-3"
+            >
+                <input id="avatarInput" type="file" name="avatar" accept="image/*" required class="hidden">
+
+                <span id="avatarFilename" class="text-sm text-gray-600 truncate max-w-xs"></span>
+
+                <button
+                type="submit"
+                class="ml-auto inline-flex items-center px-3 py-1.5 rounded-md bg-green-600 text-white text-sm font-medium hover:bg-green-700 focus:outline-none"
+                id="SaveAvatar"
+                >Change Avatar</button>
             </form>
             </div>
             {% endif %}
         </div>
-
-        <!-- User Posts -->
-        <div class="posts-grid">
-            {% for post in posts %}
-            <div class="post-card-grid">
-                <a href="{{ url_for('main.view_post', post_id=post['id']) }}">
-                    <img src="{{ url_for('main.uploaded_file', filename=post['image']|replace('.', '_thumb.')) }}" class="post-thumb" alt="Post">
-                </a>
-                {% if user and user['username'] == profile['username'] %}
-                    <a href="#" onclick='deletePost("{{post.id}}"); return false' class="delete-btn">X</a>
-                {% endif %}
-            </div>
-            {% else %}
-            <p class="no-posts">This user has no posts yet.</p>
-            {% endfor %}
         </div>
+    </div>
+
+    <!-- User Posts -->
+    <div class="mt-6">
+        {% if posts|length > 0 %}
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        {% for post in posts %}
+        <div class="relative bg-white rounded-lg overflow-hidden shadow-sm">
+            <a href="{{ url_for('main.view_post', post_id=post['id']) }}">
+            <img
+                src="{{ url_for('main.uploaded_file', filename=post['image']|replace('.', '_thumb.')) }}"
+                alt="Post"
+                class="w-full h-48 object-cover"
+            >
+            </a>
+
+            {% if user and user['username'] == profile['username'] %}
+            <button
+            class="absolute top-2 right-2 w-8 h-8 rounded-full bg-red-600 text-white text-xs font-bold flex items-center justify-center shadow-md hover:bg-red-700 focus:outline-none"
+            onclick="deletePost({{ post['id'] }}); return false;"
+            aria-label="Delete post"
+            >×</button>
+            {% endif %}
+        </div>
+        {% endfor %}
+        </div>
+        {% else %}
+            <div class="mt-6 rounded-2xl bg-gray-900/90 border border-gray-800 p-8 text-center shadow-lg">
+                <p class="text-gray-300 text-sm tracking-wide">
+                    This user has no posts, yet.
+                </p>
+            </div>
+        {% endif %}
+    </div>
     </main>
+
 {% if user and user['username'] == profile['username'] %}
 <script src="{{url_for('static',filename='javascript/individual/profile.js')}}"></script>
 {% endif %} 
 
-
-<script src="/static/javascript/code.js"></script>
 {% include "fragments/side.html" %}
 </body>
 </html>
