@@ -73,18 +73,21 @@
             <div class="flex items-center gap-3">
                 {% if user %}
                 <button
-                class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-800 border border-gray-700 text-sm text-gray-100 hover:bg-gray-700 focus:outline-none"
+                class="like-btn inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-800 border border-gray-700 text-sm text-gray-100 hover:bg-gray-700 focus:outline-none"
                 data-id="{{ post['id'] }}"
                 aria-pressed="false"
+                id="like-btn-{{ post['id'] }}"
+                data-id="{{post['id']}}"
                 >
                 <span aria-hidden>❤️</span>
                 <span id="like-count-{{ post['id'] }}">{{ like_count }}</span>
                 </button>
 
                 <button
-                class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-800 border border-gray-700 text-sm text-gray-100 hover:bg-gray-700 focus:outline-none"
+                class="dislike-btn inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-800 border border-gray-700 text-sm text-gray-100 hover:bg-gray-700 focus:outline-none"
                 data-id="{{ post['id'] }}"
                 aria-pressed="false"
+                data-id="{{post['id']}}"
                 >
                 <span aria-hidden>💔</span>
                 <span id="dislike-count-{{ post['id'] }}">{{ dislike_count }}</span>
