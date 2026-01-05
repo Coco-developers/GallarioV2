@@ -1,0 +1,65 @@
+<!-- FLASH MESSAGES (Tailwind toasts) -->
+<!-- container: a stacked toast area in the top-right (desktop-friendly) -->
+<div id="flashContainer" class="fixed top-4 right-4 z-50 w-full max-w-md space-y-3 pointer-events-none" aria-live="polite" aria-atomic="true">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        {# map category -> tailwind bg/text class #}
+        {% set bg = 'bg-red-600 text-white' if category == 'error' else
+                   'bg-green-600 text-white' if category == 'success' else
+                   'bg-yellow-500 text-black' if category == 'warning' else
+                   'bg-blue-600 text-white' %}
+        <div
+          class="flash-item pointer-events-auto rounded-lg shadow-lg px-4 py-3 flex items-start gap-3 transition transform duration-300 ease-out opacity-100 translate-y-0 {{ bg }}"
+          role="status"
+        >
+          <div class="flex-1 text-sm leading-tight break-words">
+            {{ message }}
+          </div>
+
+          <!-- close button -->
+          <button
+            type="button"
+            class="ml-2 -mr-1 inline-flex p-1 rounded-md focus:outline-none focus:ring-2 focus:ring-white/40"
+            aria-label="Close"
+            onclick="dismissFlash(this)"
+          >
+            <!-- small X icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
+
+<script>
+  // Auto-dismiss toasts after N ms and provide dismiss function
+  (function () {
+    const AUTO_DISMISS_MS = 4000; // 4s
+
+    // auto-dismiss existing flashes
+    document.querySelectorAll('#flashContainer .flash-item').forEach((el, idx) => {
+      // stagger fadeouts slightly so multiple toasts look nicer
+      const delay = AUTO_DISMISS_MS + idx * 150;
+      setTimeout(() => fadeOutAndRemove(el), delay);
+    });
+
+    // called by the close button
+    window.dismissFlash = function (btn) {
+      const el = btn.closest('.flash-item');
+      if (el) fadeOutAndRemove(el);
+    };
+
+    function fadeOutAndRemove(el) {
+      // apply exit classes
+      el.style.transition = 'opacity 300ms ease-out, transform 300ms ease-out';
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(-8px) scale(0.98)';
+      // remove from DOM after transition
+      setTimeout(() => el.remove(), 320);
+    }
+  })();
+</script>
