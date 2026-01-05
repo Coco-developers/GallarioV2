@@ -86,9 +86,8 @@
                 <h2 class="font-bold text-white" style="font-family: 'Times New Roman ', serif;">Create a Post</h2>
             </div>
             <form id="post-upload" action="{{ url_for('api.upload') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-                <div class="upload-area rounded-xl p-4 text-center cursor-pointer">
-                    <input id="photoInput" type="file" name="photo" accept="image/*" required
-                        class="w-full text-sm text-gray-400 cursor-pointer">
+                <div class="upload-area rounded-xl p-4 text-center cursor-pointer"  onclick="document.getElementById('photoInput').click()">
+                    <input id="photoInput" type="file" name="photo" accept="image/*" required class="w-full text-sm text-gray-400 cursor-pointer">
                 </div>
 
                 <img id="imagePreview" class="hidden mt-4 rounded-xl max-h-64 mx-auto border border-white/10" />
