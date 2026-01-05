@@ -207,9 +207,10 @@ def save_avatar_file(file_storage):
 
     # Process the image
     img = Image.open(file_storage.stream)
-    img = img.convert("RGB")  # Convert to RGB to avoid transparency issues
-    img = crop_to_square(img)  # Make it square
-    img = img.resize((256, 256), Image.LANCZOS)  # Resize to standard avatar size
+    img = img.convert("RGB")                    # Convert to RGB to avoid transparency issues
+    img = crop_to_square(img)                   # Make it square
+    img = ImageOps.exif_transpose(img)          # Make it so it is correctly rotated
+    img = img.resize((256, 256), Image.LANCZOS) # Resize to standard avatar size
     
     # Save as optimized PNG
     img.save(full_path, format="PNG", optimize=True)
@@ -232,7 +233,7 @@ def save_upload_file(file_storage):
 
     file_storage.save(full_path)
     with Image.open(full_path) as img:
-        img = ImageOps.exif_transpose(img)
+        img = ImageOps.exif_transpose(img) # Without this some pictures would be uncorrectly rotated
         img.thumbnail((1920, 1920), Image.LANCZOS)
         name, ext = os.path.splitext(unique)
         thumb_filename = f"{name}_thumb{ext}"
