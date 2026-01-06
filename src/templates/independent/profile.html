@@ -27,9 +27,14 @@
             </div>
 
             {% if user and user['username'] == profile['username'] %}
-            <div class="flex flex-col items-end gap-2">
+            <div class="flex items-end gap-2">
                 <a
-                href="/delete_account"
+                href="{{ url_for('main.logout') }}"
+                class="text-red-600 font-semibold hover:underline text-sm"
+                >Logout</a>
+                <br>
+                <a
+                href="{{ url_for('main.delete_account') }}"
                 class="text-red-600 font-semibold hover:underline text-sm"
                 >Delete account</a>
             </div>

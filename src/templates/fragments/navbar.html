@@ -31,17 +31,7 @@
                     </div>
                     <span class="hidden sm:block font-semibold text-gray-300 group-hover:text-white transition-colors">{{ user.username }}</span>
                 </a>
-                <a href="{{ url_for('main.logout') }}" class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-red-500/10 hover:border-red-500/30 hover:text-red-400 transition-all text-sm font-medium text-gray-400">
-                    Logout
-                </a>
                 {% else %}
-                <a href="{{ url_for('main.login') }}" class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 transition-all">
-                    <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                    </div>
-                </a>
                 <a href="{{ url_for('main.login') }}" class="btn-primary-gradient px-5 py-2.5 rounded-xl font-semibold text-white text-sm">
                     Login
                 </a>
