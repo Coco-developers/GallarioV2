@@ -434,7 +434,7 @@ def delete_account():
         db.execute("DELETE FROM users WHERE id = ?;", (user_id,))
         db.commit()
         redirect(url_for("main.login"))
-        return redirect(url_for("main.index")), 200
+        return jsonify(Success=True), 200
 
     except sqlite3.IntegrityError as e:
         db.rollback() # FK constraint failed or other integrity issue

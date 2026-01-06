@@ -1,28 +1,75 @@
-{% extends "fragments/layout.html" %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Delete account - Gallario</title>
+    {% include "fragments/header.html" %}
+</head>
+<body class="gradient-bg min-h-screen text-white pattern-bg">
+{% include "fragments/navbar.html" %}
 <div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h3 class="mb-4 text-center">Delete your account</h3>
-                <form method="POST" action="{{ url_for('api.delete_account') }}" method="POST" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label class="form-label" style="font-family: 'Helvetica', serif;">Password</label>
-                        <input type="password" name="password" class="form-control" required>
-                    </div>
-                    <input type="checkbox" required>
-                    I know that all the posts and comments that were made by me would be deleted. and that this action cannot be undone.
+    <div class="w-full max-w-xl mx-auto p-16">
+    <div class="rounded-2xl bg-gray-900/90 border border-gray-800 shadow-lg overflow-hidden">
+    <div class="p-8">
+      <h3 class="text-center text-2xl font-semibold text-white mb-6">
+        Delete Account
+      </h3>
 
-                    <button type="submit" class="btn btn-primary w-100">
-                        Delete my account
-                    </button>
-                </form>
+      <form method="POST" id="mainForm" enctype="multipart/form-data" class="space-y-5" action="/delete_account_api">
+        <!-- Password -->
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Reenter your password to delete account"
+            required
+            class="w-full rounded-md bg-gray-800 border border-gray-700 px-4 py-3 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          >
+        </div>
+        <!-- Legal checkbox -->
+        <div class="flex items-start gap-3 mt-1">
+            <input id="agree" name="agree" type="checkbox" required class="mt-0.5 h-4 w-4 rounded text-indigo-500 bg-gray-800 border-gray-700 focus:ring-indigo-400">
+            <label for="agree" class="text-sm text-gray-300">
+            I know that deleting my account is irreversible.
+            </label>
+        </div>
 
-                <div class="mt-3 text-center">
-                    <p style="font-family: 'Helvetica', serif;"><a href="{{ url_for('main.index') }}" style="font-family: 'Helvetica', serif;">Go to Home</a></p>
-                </div>
+        <!-- Submit -->
+        <div>
+          <button
+            type="submit"
+            class="w-full inline-flex justify-center items-center gap-2 px-4 py-3 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            >
+            Delete my account
+                </button>
+            </div>
+        </form>
+
+            <!-- Footer links -->
+            <div class="mt-5 text-center text-sm text-gray-400">
+                <p>Don't have an account? <a href="{{ url_for('main.index') }}" class="text-indigo-400 hover:underline">Go back</a></p>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
+<script>
+    document.getElementById("mainForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!confirm("Are you sure you want to delete your account? This action is irreversible.")) {
+            return;
+        }
+        const res = await fetch(e.target.action, {
+            method: "POST",
+            body: new FormData(e.target)
+        });
+
+        const data = await res.json();
+        if (data.Success) {
+            window.location.replace("/");
+        }
+    });
+
+</script>
+</body>
