@@ -15,13 +15,13 @@
         <img
             src="{{ url_for('static', filename=profile['avatar']) }}"
             alt="Avatar"
-            class="w-28 h-28 rounded-full object-cover flex-shrink-0"
+            class="w-28 h-28 md:w-19 md:h-19 rounded-full object-cover flex-shrink-0"
         >
 
-        <div class="flex-1 min-w-0">
-            <div class="flex items-start justify-between gap-4">
-            <div class="truncate">
-                <h2 class="text-2xl font-semibold text-white-900 truncate">{{ profile['username'] }}</h2>
+        <div class="flex-1">
+            <div class="flex flex-col sm:flex-row items-start justify-between gap-4">
+            <div class="flex-1 min-w-0">
+                <h2 class="text-2xl font-semibold text-white-900">{{ profile['username'] }}</h2>
                 <h3>Description :</h3>
                 <p id="profileDescription" class="mt-1 text-gray-600 break-words">{{ profile['description'] }}</p>
             </div>

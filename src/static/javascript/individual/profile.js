@@ -75,10 +75,19 @@ async function deletePost(postId) {
         alert("Could not delete post.");
     }
 }
-
-document.getElementById("SaveAvatar").addEventListener('click', e => {
-    const input = document.getElementById("avatarInput");
-    if (input.value == '') {
-        input.click();
+// For one button avatar changing
+const saveAvatarButton = document.getElementById("SaveAvatar");
+const AvatarInput = document.getElementById("avatarInput");
+saveAvatarButton.addEventListener('click', e => {
+    if (AvatarInput.value == '') {
+        AvatarInput.click();
     }
 });
+AvatarInput.addEventListener("change", () => {
+    if (AvatarInput.value == ''){ 
+        saveAvatarButton.innerText = "Change Avatar"; 
+    } else{
+        saveAvatarButton.innerText = "Apply Avatar"; 
+    }
+});
+
