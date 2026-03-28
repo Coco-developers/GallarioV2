@@ -9,7 +9,7 @@ from flask import session
 from werkzeug.utils import secure_filename  # Secure file name handling
 from PIL import Image, ImageOps  # Image processing (resize, crop, etc.)
 
-from src.backend import (DB_PATH, ALLOWED_EXTENSIONS, AVATAR_FOLDER, UPLOAD_FOLDER)
+from src.backend.Config import (DB_PATH, ALLOWED_EXTENSIONS, AVATAR_FOLDER, UPLOAD_FOLDER)
 
 # =============================================================================
 # DATABASE HELPER FUNCTIONS

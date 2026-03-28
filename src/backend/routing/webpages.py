@@ -1,13 +1,13 @@
 import math
 import sqlite3
 from ..Helpers import (
-    get_db, current_user, save_avatar_file, send_from_directory
+    get_db, current_user, save_avatar_file
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 from ..Config import (UPLOAD_FOLDER)
 from flask import (
     session, Blueprint, request, render_template, url_for, redirect,
-    flash, jsonify
+    flash, send_from_directory, jsonify
 )
 
 web = Blueprint("main", __name__, url_prefix="/")
