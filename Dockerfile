@@ -10,6 +10,6 @@ RUN pip install -r requirements.txt
 COPY src ./src/
 COPY app.py .
 
-# Expose the port and run the Flask Server
+# Expose the port and run the Flask Server using Gunicorn
 EXPOSE 8000
-CMD ["python", "app.py", "--server", "--port", "8000"]
+CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:8000"]

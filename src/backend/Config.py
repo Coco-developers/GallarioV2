@@ -1,5 +1,4 @@
 import os                     # File system operations
-import argparse               # Argument passing through terminal
 # Flask framework imports
 from flask import Flask
 
@@ -8,11 +7,6 @@ from flask import Flask
 # APPLICATION CONFIGURATION
 # =============================================================================
 # Initialize Flask application
-parser = argparse.ArgumentParser(description="Gallario - ImageServer - Social Media Image Sharing Platform - Coco devs, all rights reserved.")
-parser.add_argument("--port", type=int, default=8080, help="Port number to run on the web app.")
-parser.add_argument("--server", action="store_true", default=False, help="Set it to True if you're hosting this on a server.")
-parser.add_argument("--debug", action="store_true", default=False, help="Set it to True if you're hosting this locally and you want to connect other devies on the network to it.")
-arg = parser.parse_args()
 
 app = Flask(__name__,template_folder="../templates",static_folder="../static")
 # Secret key for session management and security
