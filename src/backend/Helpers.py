@@ -1,16 +1,15 @@
 import os                     # File system operations
 import sqlite3                # Database operations
 import uuid                   # Generate unique identifiers
-from datetime import datetime # Date/time handling
 
 # Flask framework imports
 from flask import session
 
 # Security and file handling imports
 from werkzeug.utils import secure_filename  # Secure file name handling
-from PIL import Image  # Image processing (resize, crop, etc.)
+from PIL import Image, ImageOps  # Image processing (resize, crop, etc.)
 
-from src.backend.Config import *
+from src.backend import (DB_PATH, ALLOWED_EXTENSIONS, AVATAR_FOLDER, UPLOAD_FOLDER)
 
 # =============================================================================
 # DATABASE HELPER FUNCTIONS
@@ -218,7 +217,6 @@ def save_avatar_file(file_storage):
     # Return relative path for database storage
     return f"avatars/{unique_name}"
 
-from PIL import Image, ImageOps
 
 def save_upload_file(file_storage):
     if not file_storage or file_storage.filename == "":

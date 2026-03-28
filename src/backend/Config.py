@@ -1,10 +1,7 @@
 import os                     # File system operations
 import argparse               # Argument passing through terminal
 # Flask framework imports
-from flask import (
-    Flask, render_template, request, redirect, url_for,
-    session, send_from_directory, jsonify, flash, abort
-)
+from flask import Flask
 
 
 # =============================================================================

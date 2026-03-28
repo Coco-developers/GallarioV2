@@ -1,4 +1,5 @@
-import math, sqlite3
+import math
+import sqlite3
 from ..Helpers import (
     get_db, current_user, save_avatar_file, send_from_directory
 )
@@ -20,8 +21,8 @@ def index():
     db = get_db()
     user_id = session.get("user_id")
     #Sort by arg
-    sortby = request.args.get("sortby", "time")
-    accending = int(request.args.get("accending", 1))
+    # sortby = request.args.get("sortby", "time")
+    # accending = int(request.args.get("accending", 1))
     # Get number of posts
     total_posts = db.execute("SELECT COUNT(*) FROM posts").fetchone()[0] 
     # Pagination setup

@@ -1,9 +1,10 @@
-import sqlite3, time
+import sqlite3
+import time
 from ..Helpers import (
     get_db, current_user, allowed_file, save_upload_file, save_avatar_file, remove_upload_file
 )
 from flask import (
-    session, Blueprint, request, url_for, redirect,
+    Blueprint, request, url_for, redirect,
     flash, jsonify, current_app
 )
 from werkzeug.security import check_password_hash
@@ -153,7 +154,7 @@ def like(post_id):
             db.commit()
             break
 
-        except sqlite3.OperationalError as e:
+        except sqlite3.OperationalError as _:
             # transient lock - backoff and retry
             if attempt == retries - 1:
                 current_app.logger.exception("DB locked when processing like")
@@ -381,7 +382,7 @@ def mark_notification_seen(notif_id):
     db = get_db()
     
     # Mark notification as seen (only for current user's notifications)
-    cur = db.execute(
+    db.execute(
         "UPDATE notifications SET seen = 1 WHERE id = ? AND receiver_id = ?",
         (notif_id, user["id"])
     )
@@ -440,7 +441,7 @@ def delete_account():
         db.rollback() # FK constraint failed or other integrity issue
         return jsonify({"error": "Database constraint error", "detail": str(e)}), 500
 
-    except Exception as e:
+    except Exception as _:
         db.rollback() # Generic server error — log server-side
         current_app.logger.exception("Error deleting account")
         return jsonify({"error": "Internal server error"}), 500
