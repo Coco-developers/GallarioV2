@@ -1,6 +1,6 @@
 #!/bin/bash
 docker run -d \
-  --name Gallario \
+  --name gallario \
   --restart unless-stopped \
   -p 80:8000 \
   -v gallario_db:/app \
