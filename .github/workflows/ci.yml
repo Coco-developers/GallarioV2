@@ -1,4 +1,3 @@
-# cd /root/Dockers/GallarioV2/ && git pull && docker build -t gallario . && docker stop gallario || true && docker rm gallario || true && docker run -v gallario_db:/app -p 80:8000 -d --name gallario gallario
 name: Continious Intergration
 run-name: ${{ github.actor }} Pushed.
 on: [push]
@@ -16,4 +15,4 @@ jobs:
           username: prod
           key: ${{ secrets.SSH_KEY }}
           proxy_host: serveo.net
-          run: cd ~/GallarioV2/ && git pull && docker build -t gallario . && docker stop gallario || true && docker rm gallario || true && docker run -v gallario_db:/app -p 80:8000 -d --name gallario gallario
+          script: cd ~/GallarioV2/ && git pull && docker build -t gallario . && docker stop gallario || true && docker rm gallario || true && docker run -v gallario_db:/app -p 80:8000 -d --name gallario gallario
