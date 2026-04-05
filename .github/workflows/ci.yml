@@ -1,6 +1,7 @@
 name: Continious Intergration
 run-name: ${{ github.actor }} Pushed.
 on: [push]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
