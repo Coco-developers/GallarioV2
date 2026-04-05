@@ -1,11 +1,19 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+# cd /root/Dockers/GallarioV2/ && git pull && docker build -t gallario . && docker stop gallario || true && docker rm gallario || true && docker run -v gallario_db:/app -p 80:8000 -d --name gallario gallario
+name: Continious Intergration
+run-name: ${{ github.actor }} Pushed.
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Build 
-        uses: actions/checkout@v5
-      - run: echo "Docker image building"
-      - run: docker build -t gallario .
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: prod
+          key: ${{ secrets.SSH_KEY }}
+          proxy_host: serveo.net
+          run: cd ~/GallarioV2/ && git pull && docker build -t gallario . && docker stop gallario || true && docker rm gallario || true && docker run -v gallario_db:/app -p 80:8000 -d --name gallario gallario
