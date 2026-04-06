@@ -1,0 +1,10 @@
+# docker-compose.dev.yml
+
+services:
+  web:
+    volumes:
+        - .:/app
+    command:
+      flask run --host=0.0.0.0 --reload --port 8000
+    ports:
+      - 80:8000
