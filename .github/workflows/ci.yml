@@ -16,4 +16,17 @@ jobs:
       - name: Deploy
         run: >
           ssh -J serveo.net -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no prod@g-ahid
-          "cd ~/GallarioV2/ && git pull && docker build -t gallario . && docker stop gallario || true && docker rm gallario || true && docker run -v gallario_db:/app -p 80:8000 -d --name gallario gallario"
+          "
+          cd ~/GallarioV2/ &&
+          git pull &&
+          docker build -t gallario . &&
+          docker stop gallario || true &&
+          docker rm gallario || true &&
+          docker run 
+          -v gallario_db:/app/src/database.db
+          -v gallario_avatars:/app/src/static/avatars
+          -v gallario_uploads:/app/src/static/uploads
+          -p 80:8000
+          -d --name gallario
+          gallario
+          "
