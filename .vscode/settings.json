@@ -5,7 +5,7 @@
         "**/.hg": true,
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
-        "requirements.txt": true,
+        "requirements.txt": false,
         "README.md": false,
         ".vscode": true,
         "**/__init__.py": true,
