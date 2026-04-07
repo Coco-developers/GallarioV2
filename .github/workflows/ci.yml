@@ -1,5 +1,5 @@
 name: Continious Intergration
-run-name: ${{ github.actor }} Pushed.
+run-name: Project updated on Dorm Server.
 on: [push]
 
 jobs:
