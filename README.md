@@ -1,4 +1,4 @@
-# Gallario - Social Media Image Sharing Platform - Made by Nezar
+# Gallario - Social Media Image Sharing Platform
 
 [![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)](https://python.org)
 [![Flask](https://img.shields.io/badge/Flask-2.0+-green.svg)](https://flask.palletsprojects.com)
